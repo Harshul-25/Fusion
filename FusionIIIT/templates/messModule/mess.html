@@ -219,8 +219,10 @@ Central Mess
 
 
 <script>
+    var c1 = {{count1}}, c2 = {{count2}} ,c3 ={{count3}}, c4={{count4}}
+    var c5={{count5}}, c6={{count6}}, c7 = {{count7}}, c8={{count8}}
         $(document).ready(function() {
-                var tab = $([data-tab = 'first']).tabs('getSelected');
+                var tab = $([data-tab == 'first']).tabs('getSelected');
                 tab.panel('refresh');
             }
             )
@@ -231,7 +233,7 @@ Central Mess
                 labels: ["Food", "Hygiene", "Maintenance", "Others"],
                 datasets: [{
                     label: 'Feedback',
-                    data: [{{count2}},{{count3}},{{count1}},{{count4}}],
+                    data: [c1,c2,c3,c4],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
@@ -268,7 +270,7 @@ Central Mess
                 labels: ["Food", "Hygiene", "Maintenance", "Others"],
                 datasets: [{
                     label: 'Feedback',
-                    data: [{{count6}},{{count7}},{{count5}},{{count8}}],
+                    data: [1,2,3,4],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',

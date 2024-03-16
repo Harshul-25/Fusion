@@ -44,8 +44,15 @@
             <!-- <a class="item" data-tab="fifteenth">
                 View Meeting Minutes
             </a> -->
+            {% if messinfo.mess_option == 'no-mess' %}
 
-            {% if reg_main_stud.current_mess_status == "Deregistered" %}
+            <a class="item" data-tab="Registration">
+                Registration
+            </a>
+
+
+
+            {% elif reg_main_stud.current_mess_status == "Deregistered" %}
 
             <a class="item" data-tab="Registration">
                 Registration
@@ -53,9 +60,9 @@
 
             {% else %}
 
-            <a class="item" data-tab="Registration">
-                Update Balance
-            </a>
+            <!-- <a class="item" data-tab="Registration">
+                Registration
+            </a> -->
 
             <a class="item" data-tab="Deregistration">
                 Deregistration

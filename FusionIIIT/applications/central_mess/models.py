@@ -303,7 +303,6 @@ class Reg_main(models.Model):
     mess_option = models.CharField(max_length=20,default='mess2')
     def __str__(self):
         return str(self.student_id.id)
-
 class Reg_records(models.Model):
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
     start_date = models.DateField(default=datetime.date.today)

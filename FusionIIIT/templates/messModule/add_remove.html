@@ -105,17 +105,26 @@
           </button>
           <ul>
             <li>
-              The excel sheet should only contain one column with the roll
-              number of all the Students those should be registered or present
-              in Mess1.
+              The excel sheet should only contain three columns including the heading - Roll no, Balance, mess_option
             </li>
             <li>File should be in .xlsx or .xls format.</li>
-            <li>This registration will add the Students to mess1.</li>
+            <li>This registration will add the Students to provided mess_option.</li>
           </ul>
         </div>
       </form>
 </div>
 
+<div class="ui modal" id="reg_form_modal" style="padding: 10px;">
+    <form class="ui form" method = "post" action="registrationRequest" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label>Roll No</label>
+        <input type="text" id="input_roll" name="input_roll">
+        {{reg_form.as_p}}
+        <button class="ui primary button"  type="submit">
+            Add student
+        </button>
+    </form>
+</div>
 
 
 {% endblock %}
@@ -172,22 +181,24 @@ function searchOrRemovefun(event){
     }
     else if(submitType==='addStudent'){
         console.log("addstudent was called")
-        $.ajax({
-                type: 'GET',
-                url: 'registeredstudent',
-                dataType: 'json',
-                data:{
-                    'roll_number': S_id,
-                    'type':submitType,
-                    'messNo':mess_option
-                },
-                success: function(data) {
-                    alert(data.message)
-                },
-                error: function(data, err) {
-                    alert(err)
-                }
-            });
+        input_roll=document.getElementById('input_roll').value = S_id
+        $('#reg_form_modal').modal('show')
+        // $.ajax({
+        //         type: 'GET',
+        //         url: 'registeredstudent',
+        //         dataType: 'json',
+        //         data:{
+        //             'roll_number': S_id,
+        //             'type':submitType,
+        //             'messNo':mess_option
+        //         },
+        //         success: function(data) {
+        //             alert(data.message)
+        //         },
+        //         error: function(data, err) {
+        //             alert(err)
+        //         }
+        //     });
     }
 }
 </script>

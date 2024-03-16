@@ -7,10 +7,15 @@
             Mess Committee
         </a> -->
         <a class="ui active item" data-tab="monthly bill">
-            Set base amount
+
+            Bill Base and Excel Upload
+
         </a>
         <a class="ui item" data-tab="View Student Bills">
             View Students Bills
+        </a>
+        <a class="ui item" data-tab="Update Bill">
+            Update Bill 
         </a>
     </div>
 
@@ -22,7 +27,54 @@
             {% endblock %}
         </div>
 
+        <div class="ui tab" data-tab="Update Bill" style="min-height:45vh;">
+            <div class="ui vertical segment">
+                <form method="post" action="{% url 'mess:updateBill' %}">
+                    {% csrf_token %}
+                    <div class="ui form" style="padding: 8px; padding-left: 12px; padding-right: 12px;">
+                        <div class ="one field">
+                            <div class= "field" style="width:100%;">
+                                    <label for="rollNo">Roll No.</label>                                       
+                                    <input type="text" name="rollNo" placeholder="Roll_No of Student" style="border:1px solid black;" required="true" id="rollNo">
 
+                            </div>
+                        </div>
+                        <div class ="one field">
+                            <div class= "field" style="width:100%;">  
+                                    <label for="new_amount">New Amount</label>                                  
+                                    <input type="text" name="new_amount" placeholder="New amount for this month bill" style="border:1px solid black;" required="true" id="new_amount">
+
+                            </div>
+                        </div>
+                        <div class ="two fields">
+                            <div class= "field" style="width:100%;">
+                                <label for="Month">Month</label>   
+                                <input type="text" name="Month" placeholder="Month of bill update" style="border:1px solid black;" required="true" id="Month">
+                            </div>
+                            <div class= "field" style="width:100%;">
+                                <label for="Year">Year</label>   
+                                <input type="number" name="Year" placeholder="Year of bill update" style="border:1px solid black;" required="true" id="Year">
+                            </div>
+                        </div>
+                        <div class ="two fields">
+                            <div class= "field" style="width:100%;">
+                                <label for="RebateCount">Rebate Count</label>   
+                                <input type="number" name="RebateCount" placeholder="Rebate count for this month" style="border:1px solid black;" required="true" id="RebateCount">
+                            </div>
+                            <div class= "field" style="width:100%;">
+                                <label for="RebateAmount">Rebate Amount</label>   
+                                <input type="number" name="RebateAmount" placeholder="Rebate amount for this month" style="border:1px solid black;" required="true" id="RebateAmount">
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" one field">
+                        <button class="ui primary button right floated" type="submit" name="submit">Update
+                        </button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
         <div class="ui tab active" data-tab="monthly bill" id="mbs">
             <div class="ui vertical segment">
 
@@ -61,6 +113,46 @@
                 </div> -->
                 
 
+            </div>
+
+            <div class="ui form" style="margin-top: 10px;">
+                <form
+                    method="POST"
+                    action="/mess/updatemonthlybill"
+                    enctype="multipart/form-data"
+                  >
+                    {% csrf_token %}
+                    <div class="field">
+                      <div class="ui label" style="display: block;">Update Monthly bill by uploading Excel</div>
+                      <input
+                        type="file"
+                        title="Upload excel file"
+                        name="excel_file_bill"
+                        accept=".xlsx,.xls"
+                        style="max-width: 15rem; margin-bottom: 1rem"
+                        required
+                      />
+                      <br />
+                    </div>
+                    <div class="field">
+                      <button
+                        class="ui primary fluid button"
+                        style="max-width: 10rem"
+                        type="submit"
+                        name="excelUpload1"
+                      >
+                        <i class="upload icon"></i>
+                        Update bills
+                      </button>
+                      <ul>
+                        <li>
+                          The excel sheet should contain seven columns including the heading - Roll no, month of bill, year of bill, amount without rebate,rebate count, rebate amount, final bill
+                        </li>
+                        <li>File should be in .xlsx or .xls format.</li>
+                        <li>This registration will update the Students bill for the provided month and year.</li>
+                      </ul>
+                    </div>
+                  </form>
             </div>
         </div>
         {% comment %} Committee sections starts here {% endcomment %}

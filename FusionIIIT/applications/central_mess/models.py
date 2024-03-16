@@ -290,7 +290,6 @@ class Registration_Request(models.Model):
     status=models.CharField(max_length=10,default='pending')
     registration_remark=models.CharField(max_length=50,default='NA')
     start_date=models.DateField(default=None, null=True)
-    # end_date=models.DateField(default=None, null=True)
     payment_date= models.DateField(default=None, null=True)
     def __str__(self):
         return str(self.student_id.id)        

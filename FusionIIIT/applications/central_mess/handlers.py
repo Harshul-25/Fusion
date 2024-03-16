@@ -331,13 +331,7 @@ def add_leave_request(request, student):
     d = datetime.strptime(str(end_date), date_format)
     number_of_days = ( d - b ).days + 1
 
-    if leave_type == "casual":
-        if (number_of_days > 5) or (number_of_days < 3):
-            data = {
-                'status': 4,
-                'message': "Cannot apply casual leave for more than 5 days or less than 3 days"
-            }
-            return data
+    
 
     rebate_check = Rebate.objects.select_related('student_id','student_id__id','student_id__id__user','student_id__id__department').filter(student_id=student, status__in=['1', '2'])
     

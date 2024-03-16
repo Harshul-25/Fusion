@@ -39,27 +39,13 @@
                         <div class="ui header">
                             Rebate Application:
                         </div>
-                        <div class="two fields">
+                        <div class="one fields">
                             <div class="field">
                                 <label>Mess:</label>
                                 <input value="{{ messinfo.mess_option }}" class="ui small input" readonly>
                             </div>
 
-                            <div class="two fields">
-                                <!-- <div class="twelve wide field">
-                                    <label>Leave Type*</label>
-                                    <select name="leave_type" class="ui fluid dropdown" id="leave_type" default="Vacation Leave">
-                                        <option value="vacation">Vacation Leave</option>
-                                    </select>
-                                </div> -->
-
-                                <div class="field">
-                                    <label><br></label>
-                                    <button class="ui primary fluid button" onclick="return lsrequest()">
-                                        Submit
-                                    </button>
-                                </div>
-                            </div>
+                            
                         </div>
 
                         <div class="two fields">
@@ -83,17 +69,20 @@
                                 </div>
                             </div>
                         </div>
-                        {% comment %}
-                            TODO: Make this Optional
-                        {% endcomment %}
+
+                        
                         <div class="field">
                             <label>Purpose*</label>
                             <textarea name="purpose" rows="2" required="true" id="purpose"></textarea>
 
                         </div>
-                        {#                    <div class="field">#}
-                        {#                        <input type="file" name="myfile">#}
-                        {#                    </div>#}
+                        <div class="field">
+                            <label><br></label>
+                            <button class="ui primary fluid button" onclick="return lsrequest()">
+                                Submit
+                            </button>
+                        </div>
+                       
 
                     </div>
                 </form>
@@ -702,7 +691,7 @@
                 alert("Please add purpose");
             }
             else if (check == 3) {
-                alert("Please select leave type and add purpose");
+                alert("Please add purpose");
             }
             else if (check == 4) {
                 alert("Please select leave type");

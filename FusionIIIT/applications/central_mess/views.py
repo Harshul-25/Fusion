@@ -24,7 +24,7 @@ from .handlers import (add_mess_feedback, add_sem_dates, add_vacation_food_reque
                        add_menu_change_request, handle_menu_change_response, handle_vacation_food_request,
                        add_mess_registration_time, add_leave_request, add_mess_meeting_invitation,
                        handle_rebate_response, add_special_food_request,
-                       handle_special_request, add_bill_base_amount, add_mess_committee,  handle_reg_response, handle_dreg_response)
+                       handle_special_request, add_bill_base_amount, add_mess_committee,  handle_reg_response, handle_dreg_response, update_month_bill)
 from notification.views import central_mess_notif
 
 import csv
@@ -68,6 +68,9 @@ def mess(request):
     count7 = 0
     count8 = 0
     if extrainfo.user_type == 'student':
+        # def deleteEntries():
+        #     Registration_Request.objects.all().delete()
+        # deleteEntries()
         student = Student.objects.select_related('id','id__user','id__department').get(id=extrainfo)
         vaca_obj = Vacation_food.objects.select_related('student_id','student_id__id','student_id__id__user','student_id__id__department').filter(student_id=student)
         feedback_obj = Feedback.objects.select_related('student_id','student_id__id','student_id__id__user','student_id__id__department').filter(student_id=student).order_by('-fdate')
@@ -75,12 +78,14 @@ def mess(request):
         payments = Payments.objects.select_related('student_id','student_id__id','student_id__id__user','student_id__id__department').filter(student_id=student)
         rebates = Rebate.objects.select_related('student_id','student_id__id','student_id__id__user','student_id__id__department').filter(student_id=student).order_by('-app_date')
         splrequest = Special_request.objects.select_related('student_id','student_id__id','student_id__id__user','student_id__id__department').filter(student_id=student).order_by('-app_date') 
-        reg_form = RegistrationRequest()
+        sem_end_date = Semdates.objects.latest('start_date')
+        reg_form = RegistrationRequest(initial={})
         reg_request = Registration_Request.objects.filter(student_id=student)
 
         de_reg_request = Deregistration_Request.objects.filter(student_id=student)
         reg_main = Reg_main.objects.get(student_id=student)
-
+        current_rem_balance = reg_main.balance
+        current_mess_status = reg_main.current_mess_status
         reg_record = Reg_records.objects.filter(student_id=student)
         monthly_bill=monthly_bill[::-1]
 
@@ -328,7 +333,8 @@ def mess(request):
                    'reg_record':reg_record,
                    'de_reg_request':de_reg_request,
                    'payments': payments,
-                  
+                   'curr_balance': current_rem_balance,
+                   'curr_status':current_mess_status,
                    'notifications':notifs
                   }
 
@@ -869,6 +875,12 @@ def update_semdates(request):
     """
     user = request.user
     data = add_sem_dates(request)
+    return HttpResponseRedirect('/mess')
+@csrf_exempt
+@login_required
+def update_bill(request):
+    # user = request.user
+    update_month_bill(request)
     return HttpResponseRedirect('/mess')
 
 def generate_mess_bill(request):
@@ -1512,16 +1524,18 @@ def reg_request(request):
             temp=form.save(commit=False)
             temp.student_id=student
             temp.save()
-            return HttpResponseRedirect("/mess")  
+            return HttpResponseRedirect("/mess")
 
 def de_reg_request(request):
-    if request.method == 'POST':
-        data={
-            'message':'request submitted successfully'
-        }
-        user = request.user
-        extra_info = ExtraInfo.objects.select_related().get(user=user)
-        student = Student.objects.select_related('id','id__user','id__department').get(id=extra_info)
-        new_req=Deregistration_Request(student_id=student)
-        new_req.save()
-        return JsonResponse(data)             
+    
+    data={
+        'message':'request submitted successfully'
+    }
+    user = request.user
+    end_date = request.POST.get("end_date")
+    print(end_date)
+    extra_info = ExtraInfo.objects.select_related().get(user=user)
+    student = Student.objects.select_related('id','id__user','id__department').get(id=extra_info)
+    new_req=Deregistration_Request(student_id=student, end_date=end_date)
+    new_req.save()
+    return  HttpResponseRedirect('/mess')

@@ -965,7 +965,8 @@ class MenuPDF(View):
             mess_option = mess_info.mess_option
             context = {
                 'menu': y,
-                'mess_option': mess_option
+                'mess_option': mess_option,
+                'date':str(today_g.date())
             }
             if mess_option=='mess2':
                 return render_to_pdf('messModule/menudownloadable2.html', context)
@@ -995,11 +996,10 @@ class MenuPDF1(View):
         user = request.user
         # extrainfo = ExtraInfo.objects.get(user=user)
         y = Menu.objects.all()
-        date_today=str(today_g)
         context = {
             'menu': y,
             'mess_option': 'mess1',
-            'date':date_today
+            'date':str(today_g.date())
         }
         return render_to_pdf('messModule/menudownloadable1.html', context)
     

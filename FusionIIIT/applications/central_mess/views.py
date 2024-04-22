@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 from .utils import render_to_pdf
 from applications.academic_information.models import Student
 from applications.globals.models import ExtraInfo, HoldsDesignation, Designation
-from .forms import MinuteForm, MessInfoForm,RegistrationRequest
+from .forms import MinuteForm, MessInfoForm,RegistrationRequest, UpdatePaymentRequest
 from .tasks import *
 from .models import (Feedback, Menu, Menu_change_request, Mess_meeting,
                      Mess_minutes, Mess_reg, Messinfo, Monthly_bill,
@@ -1597,6 +1597,18 @@ def reg_request(request):
                 return HttpResponseRedirect("/mess")  
 
             
+def update_payment(request):
+    user = request.user
+    extra_info = ExtraInfo.objects.select_related().get(user=user)    
+    student = Student.objects.select_related('id','id__user','id__department').get(id=extra_info)
+    if request.method == 'POST':
+        form = UpdatePaymentRequest(request.POST, request.FILES)
+
+        if form.is_valid():
+            temp=form.save(commit=False)
+            temp.student_id=student
+            temp.save()
+            return HttpResponseRedirect("/mess")
 
 @csrf_exempt
 def update_bill_excel(request):

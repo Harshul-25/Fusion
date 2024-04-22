@@ -995,9 +995,11 @@ class MenuPDF1(View):
         user = request.user
         # extrainfo = ExtraInfo.objects.get(user=user)
         y = Menu.objects.all()
+        date_today=str(today_g)
         context = {
             'menu': y,
-            'mess_option': 'mess1'
+            'mess_option': 'mess1',
+            'date':date_today
         }
         return render_to_pdf('messModule/menudownloadable1.html', context)
     

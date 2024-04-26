@@ -656,6 +656,7 @@ class RegistrationRequestApi(APIView):
                     reg_main = Reg_main.objects.get(student_id=student)
                     reg_main.current_mess_status = "Registered"
                     reg_main.balance = F('balance') + amount
+                    reg_main.mess_option = mess_option
                 except Reg_main.DoesNotExist:
                     reg_main = Reg_main.objects.create(
                         student_id=student,
